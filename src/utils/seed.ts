@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
-import CurrentContent from '../models/CurrentContent'
+import Content from '../models/Content'
+import ContentLog from '../models/ContentLog'
 import mockContent from './mockContent'
 
 mongoose
@@ -12,8 +13,9 @@ mongoose
   })
 
 const seedDB = async () => {
-  await CurrentContent.deleteMany({})
-  await CurrentContent.insertMany(mockContent)
+  await ContentLog.deleteMany({})
+  await Content.deleteMany({})
+  await Content.insertMany(mockContent)
 }
 
 seedDB().then(() => {

@@ -1,12 +1,12 @@
 import { Document, model, Schema } from 'mongoose'
 
-export interface ICurrentContent extends Document {
+export interface IContent extends Document {
   title: string,
   body: string,
   revision: number,
 }
 
-const CurrentContentSchema = new Schema({
+const ContentSchema = new Schema({
   title: String,
   body: String,
   revision: Number
@@ -15,4 +15,4 @@ const CurrentContentSchema = new Schema({
   timestamps: true
 })
 
-export default model<ICurrentContent>('CurrentContent', CurrentContentSchema)
+export default model<IContent>('Content', ContentSchema)
