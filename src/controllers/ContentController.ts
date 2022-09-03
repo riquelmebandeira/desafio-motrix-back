@@ -23,6 +23,14 @@ class ContentController {
 
     return res.status(StatusCode.OK).json(updatedContent)
   }
+
+  public async deleteOne (req: Request, res: Response): Promise<Response> {
+    const { id } = req.params
+
+    const deletedContent = await ContentService.deleteOne(id)
+
+    return res.status(StatusCode.OK).json(deletedContent)
+  }
 }
 
 export default new ContentController()

@@ -12,7 +12,7 @@ class ContentService {
     return Content.find()
   }
 
-  public async updateOne (id: string, title: string, body: string) {
+  public async updateOne (id: string, title: string, body: string): Promise<IContent | void> {
     const currentContent = await Content.findOne({ _id: id }).lean()
 
     if (!currentContent) throw new CustomError(StatusCode.NOT_FOUND, 'This content id does not exist.')
@@ -26,6 +26,12 @@ class ContentService {
 
     // Atualiza a coleção 'contents' para a versão mais recente do conteúdo.
     return Content.findOneAndUpdate({ _id: id }, { title, body }, { new: true })
+  }
+
+  public async deleteOne (id: string) {
+    await ContentLog.deleteMany({ id })
+
+    return Content.findOneAndDelete({ _id: id })
   }
 }
 
