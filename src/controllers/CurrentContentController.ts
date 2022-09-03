@@ -8,6 +8,12 @@ class CurrentContentController {
 
     return res.status(StatusCode.OK).json(newContent)
   }
+
+  public async getAll (req: Request, res: Response): Promise<Response> {
+    const contents = await CurrentContentService.getAll()
+
+    return res.status(StatusCode.OK).json(contents)
+  }
 }
 
 export default new CurrentContentController()
