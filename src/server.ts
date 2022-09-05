@@ -4,9 +4,11 @@ import * as dotenv from 'dotenv'
 import errorMiddleware from './middlewares/errorMiddleware'
 dotenv.config()
 
-app.express.use('/content', CurrentContentRouter)
+app.express.use('/contents', CurrentContentRouter)
 app.express.use(errorMiddleware)
 
-app.express.listen(process.env.PORT, () => {
+const server = app.express.listen(process.env.PORT, () => {
   console.log(`Servidor online na porta ${process.env.PORT}`)
 })
+
+export default server

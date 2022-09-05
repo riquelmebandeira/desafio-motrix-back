@@ -12,8 +12,8 @@ class ContentService {
     return Content.find()
   }
 
-  public async updateOne (id: string, title: string, body: string): Promise<IContent | void> {
-    const currentContent = await Content.findOne({ _id: id }).lean()
+  public async updateOne (id: string, title: string, body: string): Promise<IContent> {
+    const currentContent = await Content.findOne({ _id: id }, null, { lean: true })
 
     if (!currentContent) throw new CustomError(StatusCode.NOT_FOUND, 'This content id does not exist.')
 
@@ -25,7 +25,9 @@ class ContentService {
     await ContentLog.create({ id: _id, ...data })
 
     // Atualiza a coleção 'contents' para a versão mais recente do conteúdo.
-    return Content.findOneAndUpdate({ _id: id }, { title, body }, { new: true })
+    return Content.findOneAndUpdate(
+      { _id: id }, { title, body }, { new: true }
+    ) as unknown as IContent
   }
 
   public async deleteOne (id: string) {
