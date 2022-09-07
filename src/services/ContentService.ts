@@ -12,19 +12,35 @@ class ContentService {
     return Content.find()
   }
 
+  public async getOne (id: string): Promise<IContent | null> {
+    const content = Content.findOne({ id })
+
+    if (!content) {
+      throw new CustomError(
+        StatusCode.NOT_FOUND, 'This content id does not exist.'
+      )
+    }
+
+    return content
+  }
+
   public async updateOne (id: string, title: string, body: string): Promise<IContent> {
     const currentContent = await Content.findOne({ _id: id }, null, { lean: true })
 
-    if (!currentContent) throw new CustomError(StatusCode.NOT_FOUND, 'This content id does not exist.')
+    if (!currentContent) {
+      throw new CustomError(
+        StatusCode.NOT_FOUND, 'This content id does not exist.'
+      )
+    }
 
     const { _id, ...data } = currentContent
 
     // Salva o conteúdo antigo na coleção 'content_logs'.
-    // Cria a variável 'id' com o valor do documento original
+    // Guarda o id original no documento
     // Para poder recuperar todas as atualizações deste mesmo conteúdo.
     await ContentLog.create({ id: _id, ...data })
 
-    // Atualiza a coleção 'contents' para a versão mais recente do conteúdo.
+    // Atualiza o conteúdo para a versão mais recente.
     return Content.findOneAndUpdate(
       { _id: id }, { title, body }, { new: true }
     ) as unknown as IContent
@@ -32,7 +48,6 @@ class ContentService {
 
   public async deleteOne (id: string) {
     await ContentLog.deleteMany({ id })
-
     return Content.findOneAndDelete({ _id: id })
   }
 }
