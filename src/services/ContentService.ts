@@ -13,15 +13,21 @@ class ContentService {
   }
 
   public async getOne (id: string): Promise<IContent | null> {
-    const content = Content.findOne({ _id: id })
+    const content = await Content.findOne({ _id: id })
 
-    if (!content) {
+    if (content) return content
+
+    // Caso o id não exista na coleção atualizada de conteúdos
+    // Buscamos, nos logs de alterações, a versão procurada
+    const outdatedContent = await ContentLog.findOne({ _id: id })
+
+    if (!outdatedContent) {
       throw new CustomError(
         StatusCode.NOT_FOUND, 'This content id does not exist.'
       )
     }
 
-    return content
+    return outdatedContent
   }
 
   public async getLogs (id: string): Promise<IContent[]> {
