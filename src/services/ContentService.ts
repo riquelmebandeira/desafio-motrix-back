@@ -13,7 +13,7 @@ class ContentService {
   }
 
   public async getOne (id: string): Promise<IContent | null> {
-    const content = Content.findOne({ id })
+    const content = Content.findOne({ _id: id })
 
     if (!content) {
       throw new CustomError(
