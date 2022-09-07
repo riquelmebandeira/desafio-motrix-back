@@ -24,6 +24,10 @@ class ContentService {
     return content
   }
 
+  public async getLogs (id: string): Promise<IContent[]> {
+    return ContentLog.find({ id })
+  }
+
   public async updateOne (id: string, title: string, body: string): Promise<IContent> {
     const currentContent = await Content.findOne({ _id: id }, null, { lean: true })
 
@@ -48,6 +52,7 @@ class ContentService {
 
   public async deleteOne (id: string) {
     await ContentLog.deleteMany({ id })
+
     return Content.findOneAndDelete({ _id: id })
   }
 }

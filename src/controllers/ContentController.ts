@@ -5,30 +5,49 @@ import StatusCode from '../utils/StatusCode'
 class ContentController {
   public async create (req: Request, res: Response): Promise<Response> {
     const newContent = await ContentService.create({ ...req.body, revision: 1 })
+
     return res.status(StatusCode.CREATED).json(newContent)
   }
 
   public async getAll (req: Request, res: Response): Promise<Response> {
     const contents = await ContentService.getAll()
+
     return res.status(StatusCode.OK).json(contents)
   }
 
   public async getOne (req: Request, res: Response): Promise<Response> {
     const { id } = req.params
+
     const content = await ContentService.getOne(id)
+
     return res.status(StatusCode.OK).json(content)
+  }
+
+  public async getLogs (req: Request, res: Response): Promise<Response> {
+    const { id } = req.params
+
+    const content = await ContentService.getOne(id)
+
+    const logs = await ContentService.getLogs(id)
+
+    return res.status(StatusCode.OK).json([...logs, content])
   }
 
   public async updateOne (req: Request, res: Response): Promise<Response> {
     const { id } = req.params
+
     const { title, body } = req.body
+
     const updatedContent = await ContentService.updateOne(id, title, body)
+
     return res.status(StatusCode.OK).json(updatedContent)
   }
 
   public async deleteOne (req: Request, res: Response): Promise<Response> {
     const { id } = req.params
+
     const deletedContent = await ContentService.deleteOne(id)
+
     return res.status(StatusCode.OK).json(deletedContent)
   }
 }
