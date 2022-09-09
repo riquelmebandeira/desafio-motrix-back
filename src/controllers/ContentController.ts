@@ -50,6 +50,14 @@ class ContentController {
 
     return res.status(StatusCode.OK).json(deletedContent)
   }
+
+  public async deleteMany (req: Request, res: Response): Promise<Response> {
+    const ids = req.body
+
+    const deletedContent = await ContentService.deleteMany(ids)
+
+    return res.status(StatusCode.OK).json(deletedContent)
+  }
 }
 
 export default new ContentController()

@@ -61,6 +61,14 @@ class ContentService {
 
     return Content.findOneAndDelete({ _id: id })
   }
+
+  public async deleteMany (ids: string[]) {
+    return ids.forEach(async (id) => {
+      await ContentLog.deleteMany({ id })
+
+      await Content.findOneAndDelete({ _id: id })
+    })
+  }
 }
 
 export default new ContentService()
